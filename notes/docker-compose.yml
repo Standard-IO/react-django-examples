@@ -1,0 +1,27 @@
+version: "0.0.1" 
+
+services:
+  frontend:
+    image: todo_app:0.0-frontend
+    build: 
+      context: frontend/frontend
+      dockerfile: Dockerfile
+    command: sh -c "npm run start"
+    ports: 
+      - "3000:3000"
+    working_dir: /app
+    volumes:
+      - ./frontend/frontend:/app
+    depends_on:
+      - backend
+  backend:
+    image: todo_app:0.0-backend
+    working_dir: /app
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    command:  sh -c "poetry run python project/manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
